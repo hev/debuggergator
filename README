@@ -1,0 +1,6 @@
+To install do the following
+
+Go to Extensions (chrome://extensions/)
+Check the Developer Mode checkbox
+Click the Load Unpacked Extension 
+Select the Folder Debuggergator
