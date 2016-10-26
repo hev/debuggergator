@@ -42,6 +42,6 @@ function openBrowserTabForGetRequests(){
 }
 
 var urls = [];
-var uniqueHttpString = "with body" //Set this to a unique string that appears in your logs for HTTP requests after the URL
+var uniqueHttpString = "with data" //Set this to a unique string that appears in your logs for HTTP requests after the URL
 var startOfRequest = "Sending request" //Set this to a unique strong that appears in your logs before the URL for the HTTP request
 scrapeContent();
