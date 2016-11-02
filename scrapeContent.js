@@ -1,47 +1,23 @@
-function scrapeContent() {
-    var content = document.body.innerHTML;
-    findFirstHTTPRequst(content);
-}
-
-
-function findFirstHTTPRequst(content){
-	var firstRequestIndex = content.indexOf(uniqueHttpString);
-	if (firstRequestIndex < 0){
-		openBrowserTabForGetRequests();
-		return; //end recursion
-	}else{
-		var request = isolateHTTPCall(content);
-		findURLsforGETs(request);
-		content = content.substring(firstRequestIndex + uniqueHttpString.length, content.length);
-		findFirstHTTPRequst(content);
+(function(){
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+	function escapeRegExp(string){
+		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 	}
 
-}
+	function findMatches(message, sender, sendResponse){
+		const prefix = escapeRegExp(message.prefix);
+		const suffix = escapeRegExp(message.suffix);
+		const regex = new RegExp(`${prefix}\\\s*(.*?)\\\s*${suffix}`, 'g');
+		const source = document.body.innerText;
 
-function isolateHTTPCall(content){
-		var startOfRequestIndex = content.indexOf(startOfRequest);
-		var firstRequestIndex = content.indexOf(uniqueHttpString);
-		var request = content.substring(startOfRequestIndex, firstRequestIndex);
-		return request;
-}
+		var matches = [];
+		var match = regex.exec(source);
+		while(match) {
+			matches.push(match[1]);
+			match = regex.exec(source);
+		}
 
-function findURLsforGETs(request){
-	request = request.replace("&amp;", "&");
-	var isGet = request.indexOf("GET");
-	if (isGet > 0){
-		urls[urls.length] = request.substring(request.indexOf('http'), request.length);
+		sendResponse({matches: matches});
 	}
-
-}
-
-function openBrowserTabForGetRequests(){
-	for (i = 0; i < urls.length; i++) {
-		var win = window.open(urls[i], '_blank');
-		if (i==urls.length) win.focus();
-    }
-}
-
-var urls = [];
-var uniqueHttpString = "with data" //Set this to a unique string that appears in your logs for HTTP requests after the URL
-var startOfRequest = "Sending request" //Set this to a unique strong that appears in your logs before the URL for the HTTP request
-scrapeContent();
+	chrome.runtime.onMessage.addListener(findMatches);
+})();
