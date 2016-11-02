@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log Buddy</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<div>
+    Scanning for text between <input type="text" id="prefix"> and <input type="text" id="suffix">
+</div>
+<br>
+<button id="scan">Scan</button>
+<button id="reset">Reset</button>
+<ul id="results"></ul>
+<div id="actions">
+    Select:
+    <a id="select-all" href="#">All</a>
+    <a href="#" id="select-none">None</a>
+    <!-- TODO: actual actions (e.g. opening each one) -->
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
